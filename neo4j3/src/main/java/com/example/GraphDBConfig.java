@@ -21,7 +21,7 @@ public class GraphDBConfig extends Neo4jConfiguration {
         setBasePackage("com.example");
     }
 
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     public GraphDatabaseService graphDatabaseService() {
         return new GraphDatabaseFactory().newEmbeddedDatabase(EMBEDDED_DATABASE_NAME);
     }
