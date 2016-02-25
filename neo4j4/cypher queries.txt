@@ -1,0 +1,54 @@
+MATCH (p:Product)-[r]-() DELETE p, r
+WITH count(*) as dummy
+MATCH (c:Category)-[r]-() DELETE c,r
+WITH count(*) as dummy
+
+CREATE (r:Category {name:'root'})
+WITH count(*) as dummy
+
+CREATE (c:Category {name:'cat 1'})
+WITH count(*) as dummy
+MATCH (r:Category { name: 'root' }), (c:Category {name:'cat 1'}) MERGE (r)-[:HAS]->(c)
+WITH count(*) as dummy
+
+CREATE (c:Category {name:'cat 2'})
+WITH count(*) as dummy
+MATCH (r:Category { name: 'root' }), (c:Category {name:'cat 2'}) MERGE (r)-[:HAS]->(c)
+WITH count(*) as dummy
+
+CREATE (p:Product {name:'product 20'})
+WITH count(*) as dummy
+MATCH (c:Category { name: 'cat 2' }), (p:Product {name:'product 20'}) MERGE (c)-[:CONTAINS]->(p)
+WITH count(*) as dummy
+
+CREATE (s:Category {name:'cat 2.1.'})
+WITH count(*) as dummy
+MATCH (c:Category { name: 'cat 2' }), (s:Category {name:'cat 2.1.'}) MERGE (c)-[:HAS]->(s)
+WITH count(*) as dummy
+
+CREATE (p:Product {name:'product 21'})
+WITH count(*) as dummy
+MATCH (c:Category { name: 'cat 2.1.' }), (p:Product {name:'product 21'}) MERGE (c)-[:CONTAINS]->(p)
+WITH count(*) as dummy
+
+CREATE (p:Product {name:'product 22'})
+WITH count(*) as dummy
+MATCH (c:Category { name: 'cat 2.1.' }), (p:Product {name:'product 22'}) MERGE (c)-[:CONTAINS]->(p)
+WITH count(*) as dummy
+
+CREATE (p:Product {name:'product 23'})
+WITH count(*) as dummy
+MATCH (c:Category { name: 'cat 2.1.' }), (p:Product {name:'product 23'}) MERGE (c)-[:CONTAINS]->(p)
+WITH count(*) as dummy
+
+CREATE (c:Category {name:'cat 3'})
+WITH count(*) as dummy
+MATCH (r:Category { name: 'root' }), (c:Category {name:'cat 3'}) MERGE (r)-[:HAS]->(c)
+WITH count(*) as dummy
+
+CREATE (p:Product {name:'product 30'})
+WITH count(*) as dummy
+MATCH (c:Category { name: 'cat 3' }), (p:Product {name:'product 30'}) MERGE (c)-[:CONTAINS]->(p)
+WITH count(*) as dummy
+
+MATCH (c:Category)-[*]-(p:Product) RETURN c, p

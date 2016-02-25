@@ -1,0 +1,2 @@
+<li><button ng-click="fetchSubCategories(category)">+</button> {{ category.name }}</li>
+<ul ng-repeat = "subCategory in category.subCategories" ng-init="category = subCategory" ng-include="'category.html'"></ul>
