@@ -8,8 +8,8 @@ import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @NodeEntity
 public class Category {
@@ -23,21 +23,21 @@ public class Category {
     public Category parent;
 
     @Relationship(type="HAS", direction = "OUTGOING")
-    public Set<Category> subCategories;
+    public List<Category> subCategories;
 
     public void has(Category person) {
         if (subCategories == null) {
-            subCategories = new HashSet<>();
+            subCategories = new ArrayList<>();
         }
         subCategories.add(person);
     }
 
     @Relationship(type="CONTAINS", direction = "OUTGOING")
-    public Set<Product> products;
+    public List<Product> products;
 
     public void contains(Product product) {
         if (products == null) {
-            products = new HashSet<>();
+            products = new ArrayList<>();
         }
         products.add(product);
     }
