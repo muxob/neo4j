@@ -4,6 +4,8 @@
 
 package com.example.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -19,9 +21,11 @@ public class Category {
 
     private String name;
 
+    @JsonManagedReference
     @Relationship(type="HAS", direction = "INCOMING")
     public Category parent;
 
+    @JsonBackReference
     @Relationship(type="HAS", direction = "OUTGOING")
     public List<Category> subCategories;
 

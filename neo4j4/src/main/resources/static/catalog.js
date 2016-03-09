@@ -7,7 +7,7 @@ angular.module('mainApp', [])
 .controller('catalog', ['$scope', '$http', function($scope, $http) {
 
     $scope.init = function() {
-        $http.get('/catalog/search/root').success(function(category) {
+        $http.get('/rootCategory').success(function(category) {
             $scope.category = category;
             $scope.expand(category);
         });
