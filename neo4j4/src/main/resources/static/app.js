@@ -1,8 +1,36 @@
-angular.module('mainApp', [])
+angular.module('mainApp', ['ngRoute'])
 
-.config(function($httpProvider) {
+.config(['$httpProvider', '$routeProvider', function($httpProvider, $routeProvider) {
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-})
+
+    $routeProvider.
+        when('/home', {
+            templateUrl: 'home.html'
+        }).
+        when('/catalog', {
+            templateUrl: 'category.html',
+            controller: 'catalog'
+        }).
+        when('/contact', {
+            templateUrl: 'contact.html'
+        }).
+        when('/about', {
+            templateUrl: 'about.html'
+        }).
+        otherwise({
+            redirectTo: '/home'
+        });
+}])
+
+.controller('navigation', ['$scope', '$location', function($scope, $location) {
+    $scope.isActive = function (menuItem) {
+        return $location.path() == ('/' + menuItem.id);
+    };
+
+    $scope.menuClicked = function (menuItem) {
+        $scope.showMenu = false;
+    };
+}])
 
 .controller('catalog', ['$scope', '$http', function($scope, $http) {
 

@@ -41,7 +41,7 @@ public class Controller {
         }
 
         ResourceSupport categoryResource = new ResourceSupport() {
-            String name = root.getName();
+            public String name = root.getName();
         };
 
         //categoryResource.add(entityLinks.linkForSingleResource(Category.class, root.getId()).withRel(Link.REL_SELF));
