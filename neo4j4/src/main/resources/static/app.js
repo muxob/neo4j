@@ -8,7 +8,7 @@ angular.module('mainApp', ['ngRoute'])
             templateUrl: 'home.html'
         }).
         when('/catalog', {
-            templateUrl: 'category.html',
+            templateUrl: 'catalog.html',
             controller: 'catalog'
         }).
         when('/contact', {

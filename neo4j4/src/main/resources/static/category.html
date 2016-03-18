@@ -1,4 +1,10 @@
-<li><button ng-hide="category.expanded" ng-click="expand(category)">+</button><button ng-show="category.expanded" ng-click="collapse(category)">-</button> {{ category.name }}</li>
-<ul ng-show="category.expanded">
-<li ng-repeat = "subCategory in category.subCategories" ng-init="category = subCategory" ng-include="'category.html'"></li>
+<li class="category">
+    <img class="category-btn category-btn-expand" ng-hide="category.expanded" ng-click="expand(category)">
+    <img class="category-btn category-btn-collapse" ng-show="category.expanded" ng-click="collapse(category)">
+    <a>{{category.name}}</a>
+    <img class="category-btn category-btn-add" ng-click="collapse(category)">
+    <img class="category-btn category-btn-delete" ng-hide="category.name==='root'" ng-click="expand(category)">
+</li>
+<ul class="category" ng-show="category.expanded">
+    <li ng-repeat = "subCategory in category.subCategories" ng-init="category = subCategory" ng-include="'category.html'"></li>
 </ul>

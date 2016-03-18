@@ -102,3 +102,62 @@ ul.menu li a.active {
     /*background-color: #1abc9c;*/
     height: 100%;
 }
+
+.catalog {
+    height: 300px;
+    width: 100%;
+}
+
+.tree{
+    float: left;
+    overflow-y: auto;
+    height: 100%;
+    width: 38%;
+    background: #fff6f6;
+    border-style: double;
+}
+
+.cat-details {
+    float: right;
+    height: 98%;
+    width: 60%;
+}
+
+.cat-products {
+    overflow-y: auto;
+    height: 40%;
+    background: #fff6f6;
+    border-style: double;
+}
+
+.all-products {
+    overflow-y: auto;
+    height: 60%;
+    background: #fff6f6;
+    border-style: double;
+}
+
+ul.category, li.category {
+    list-style-type: none;
+}
+
+img.category-btn {
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+img.category-btn-expand {
+    content: url("expand.png");
+}
+
+img.category-btn-collapse {
+    content: url("collapse.png");
+}
+
+img.category-btn-add {
+    content: url("plus.png");
+}
+
+img.category-btn-delete {
+    content: url("delete.png");
+}
