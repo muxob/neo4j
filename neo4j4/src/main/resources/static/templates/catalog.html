@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="row">
+        <section class="col-md-6 col-lg-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">Catalog Tree</div>
+                <div class="panel-body">
+                    <ul ng-include = "'templates/category_tree.html'"></ul>
+                </div>
+            </div>
+        </section>
+        <section class="col-md-6 col-lg-3" ng-controller="products">
+            <div class="panel panel-default">
+                <div class="panel-heading">Products</div>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="product in catalogProducts">{{product.name}}</li>
+                </ul>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Products recursively</div>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="product in allProducts">{{product.name}}</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="col-md-12 col-lg-6" ng-controller="newCategory" ng-show="showForm">
+            <div class="panel panel-default">
+                <div class="panel-heading">Create new sub-category</div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form" name="newCategory">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="newCategoryName">New Category Name</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span ng-repeat="pc in parentCategories"> / <a href="#">{{pc.name}}</a></span> / </span>
+                                    <input type="text" id="newCategoryName" name="name" placeholder="Enter name here" ng-model="name" ng-required="true" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="new_cat_products">Products</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" rows="7" id="new_cat_products" name="products" ng-model="products" placeholder="Enter products separated by new line"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <button type="submit" class="btn btn-default" ng-disabled="!newCategory.$valid" ng-click="newCategory.$valid && createNewCategory()">Create</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+    </div><!-- /.row -->
+</div> <!-- /container -->

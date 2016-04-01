@@ -5,14 +5,13 @@
 package com.example;
 
 import com.example.domain.Category;
+import com.example.domain.Product;
 import com.example.repository.Catalog;
+import com.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,12 +22,15 @@ public class Controller {
     private Catalog catalog;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private EntityLinks entityLinks;
 
     private final static String ROOT_NAME = "root";
 
     @RequestMapping(value = "/rootCategory", method = RequestMethod.GET)
-    public ResourceSupport getRootCategory() {
+    public Resource<Category> getRootCategory() {
         Category root;
         List<Category> categoryList = catalog.findByName(ROOT_NAME);
         if (categoryList.isEmpty()) {
@@ -40,15 +42,41 @@ public class Controller {
 
         }
 
-        ResourceSupport categoryResource = new ResourceSupport() {
-            public String name = root.getName();
-        };
+        return toHateoas(root);
+    }
 
-        //categoryResource.add(entityLinks.linkForSingleResource(Category.class, root.getId()).withRel(Link.REL_SELF));
-        //categoryResource.add(entityLinks.linkForSingleResource(Category.class, root.getId()).withRel("category"));
-        categoryResource.add(entityLinks.linkForSingleResource(Category.class, root.getId()).slash("subCategories").withRel("subCategories"));
-        //categoryResource.add(entityLinks.linkForSingleResource(Category.class, root.getId()).slash("parent").withRel("parent"));
-        //categoryResource.add(entityLinks.linkForSingleResource(Category.class, root.getId()).slash("products").withRel("products"));
+    @RequestMapping(value = "/catalog", method = RequestMethod.POST)
+    @Transactional
+    public Resource<Category> createSubcategory(@RequestBody Category request) {
+        Category newCategory = new Category();
+        newCategory.setName(request.getName());
+        catalog.save(newCategory);
+
+        Category parent = catalog.findByName(request.parent.getName()).get(0);
+        parent.has(newCategory);
+        catalog.save(parent);
+
+        for (Product p : request.products) {
+            Product newProduct = new Product();
+            newProduct.setName(p.getName());
+            productRepository.save(newProduct);
+
+            newCategory = catalog.findByName(newCategory.getName()).get(0);
+            newCategory.contains(newProduct);
+            catalog.save(newCategory);
+        }
+
+        return toHateoas(newCategory);
+    }
+
+    private Resource<Category> toHateoas(Category category) {
+        Resource<Category> categoryResource = new Resource<Category>(category);
+
+        categoryResource.add(entityLinks.linkForSingleResource(Category.class, category.getNodeId()).withRel(Link.REL_SELF));
+        categoryResource.add(entityLinks.linkForSingleResource(Category.class, category.getNodeId()).withRel("category"));
+        categoryResource.add(entityLinks.linkForSingleResource(Category.class, category.getNodeId()).slash("subCategories").withRel("subCategories"));
+        categoryResource.add(entityLinks.linkForSingleResource(Category.class, category.getNodeId()).slash("parent").withRel("parent"));
+        categoryResource.add(entityLinks.linkForSingleResource(Category.class, category.getNodeId()).slash("products").withRel("products"));
 
         return categoryResource;
     }

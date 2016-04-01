@@ -21,32 +21,26 @@ public class Category {
 
     private String name;
 
-    @JsonManagedReference
+    //@JsonBackReference("parent")
     @Relationship(type="HAS", direction = "INCOMING")
     public Category parent;
 
     @JsonBackReference
     @Relationship(type="HAS", direction = "OUTGOING")
-    public List<Category> subCategories;
+    public List<Category> subCategories = new ArrayList<>();
 
     public void has(Category person) {
-        if (subCategories == null) {
-            subCategories = new ArrayList<>();
-        }
         subCategories.add(person);
     }
 
     @Relationship(type="CONTAINS", direction = "OUTGOING")
-    public List<Product> products;
+    public List<Product> products = new ArrayList<>();
 
     public void contains(Product product) {
-        if (products == null) {
-            products = new ArrayList<>();
-        }
         products.add(product);
     }
 
-    public Long getId() {
+    public Long getNodeId() {
         return id;
     }
 
